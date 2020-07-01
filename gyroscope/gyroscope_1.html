@@ -37,6 +37,8 @@
     </ul>
     
 <h2>Device motion test</h2>
+<button id="request" title="Tap Here">Tap Here to enable orientation tracking</button>
+
 <div id="msg"></div>
 
 <div id='test' tabindex='0' class="test">
@@ -46,6 +48,28 @@
 
 
 <script>
+
+// function requestT () {
+//       if (typeof(DeviceMotionEvent) !== 'undefined' && typeof(DeviceMotionEvent.requestPermission) === 'function') {
+          
+//           DeviceMotionEvent.requestPermission()
+//           .then(response => {
+// 	alert('Orientation tracking '+ response);
+          
+//             if (response == 'granted') {
+//               window.addEventListener('devicemotion', (e) => {
+//                document.getElementById('request').style.visibility='hidden';
+//               })
+//             }
+//           })
+//       .catch(console.error)
+//       }else {
+//           alert('DeviceMotionEvent is not defined');
+//       }
+
+//   }
+//   document.getElementById('request').onclick = requestT;
+
     function Orientation(selector){}
     Orientation.prototype.init = function(){
         window.addEventListener('deviceorientation', this.oriListener, false);
@@ -131,7 +155,6 @@
         }
     };
 
-    (new Orientation()).init();
 </script>
 	
 </body>
