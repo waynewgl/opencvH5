@@ -46,7 +46,25 @@
 
 
 <script>
-    function Orientation(selector){}
+
+      if (typeof(DeviceMotionEvent) !== 'undefined' && typeof(DeviceMotionEvent.requestPermission) === 'function') {
+          
+          DeviceMotionEvent.requestPermission()
+          .then(response => {
+	alert('Orientation tracking '+ response);
+          
+            if (response == 'granted') {
+              window.addEventListener('devicemotion', (e) => {
+                function Orientation(selector){}
+              })
+            }
+          })
+      .catch(console.error)
+      }else {
+          alert('DeviceMotionEvent is not defined');
+          function Orientation(selector){}
+      }
+
     Orientation.prototype.init = function(){
         window.addEventListener('deviceorientation', this.oriListener, false);
         window.addEventListener('MozOrientation', this.oriListener, false); //为firefox所用
