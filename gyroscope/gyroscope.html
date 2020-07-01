@@ -49,26 +49,26 @@
 
 <script>
 
-function requestT () {
-      if (typeof(DeviceMotionEvent) !== 'undefined' && typeof(DeviceMotionEvent.requestPermission) === 'function') {
+// function requestT () {
+//       if (typeof(DeviceMotionEvent) !== 'undefined' && typeof(DeviceMotionEvent.requestPermission) === 'function') {
           
-          DeviceMotionEvent.requestPermission()
-          .then(response => {
-	alert('Orientation tracking '+ response);
+//           DeviceMotionEvent.requestPermission()
+//           .then(response => {
+// 	alert('Orientation tracking '+ response);
           
-            if (response == 'granted') {
-              window.addEventListener('devicemotion', (e) => {
-               document.getElementById('request').style.visibility='hidden';
-              })
-            }
-          })
-      .catch(console.error)
-      }else {
-          alert('DeviceMotionEvent is not defined');
-      }
+//             if (response == 'granted') {
+//               window.addEventListener('devicemotion', (e) => {
+//                document.getElementById('request').style.visibility='hidden';
+//               })
+//             }
+//           })
+//       .catch(console.error)
+//       }else {
+//           alert('DeviceMotionEvent is not defined');
+//       }
 
-  }
-  document.getElementById('request').onclick = requestT;
+//   }
+//   document.getElementById('request').onclick = requestT;
 
     function Orientation(selector){}
     Orientation.prototype.init = function(){
