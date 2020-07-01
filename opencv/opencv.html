@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="./css/len_h5.css">  
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	</head>
+	<body>
+
+		<ul>
+			<li><a href="../opencv/opencv.html">OpenCv</a></li>
+			<li><a href="../audioPlay/audioPlay.html">Audio playing</a></li>
+			<li><a href="../voiceRecognition/voiceRecognition.html">Voice Recognition</a></li>
+			<li><a href="../gyroscope/gyroscope.html">Gyroscope</a></li>
+		</ul>		
+		<div>
+			<button style="border: none; width: 100%;height:60px;background: orange;color: white" id="startAndStop" disabled>Start</button>
+			<textarea style="display: none" class="code" rows="10" cols="80" id="codeEditor" spellcheck="false"></textarea>
+		</div>
+		<p class="err" id="errorMessage"></p>
+		<div>
+			<video playsinline=true style="display: none" id="videoInput" width='100%'></video>
+			<canvas id="canvasOutput" width='100%'></canvas>
+			<div style="display: none" class="caption">videoInput</div>
+
+			<!-- <div id="app">
+				<label for="name">Name:</label>
+				<input id="name" type="text" v-model="name" /> 
+				<p>{{ name }}</p>
+			</div> -->
+		</div>
+		<div id="square" class="center" style="display: none;">
+			<div class="square blue"></div>
+		</div>
+		<script src="./js/utils.js" type="text/javascript"></script>
+		<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.3/vue.min.js"></script> -->
+
+		<script id="codeSnippet" type="text/code-snippet">
+					let video = document.getElementById('videoInput');
+					let src = new cv.Mat(video.height, video.width, cv.CV_8UC4);
+					let dst = new cv.Mat(video.height, video.width, cv.CV_8UC4);
+					let gray = new cv.Mat();
+					let cap = new cv.VideoCapture(video);
+					let faces = new cv.RectVector();
+
+					let classifier = new cv.CascadeClassifier();
+					let downSampled = new cv.Mat();
+
+					// load pre-trained classifiers
+					//classifier.load('haarcascade_frontalface_default.xml');
+					classifier.load('Hand.Cascade.1.xml');
+					
+					const FPS = 60;
+
+					let contours = new cv.MatVector();
+					let hierarchy = new cv.Mat();
+					let polys = new cv.MatVector();
+					//RGB
+					function processVideo() {
+						cap.read(src);
+						src.copyTo(dst);
+						cv.flip(dst,dst,1);
+						cv.cvtColor(dst, gray, cv.COLOR_BGR2RGB, 0);
+						
+						// Downsample
+						cv.pyrDown(gray, gray);
+						cv.pyrDown(gray, gray);
+						cv.pyrDown(gray, gray);
+
+						let blue, green, red, x,y;
+						let threshold = new cv.Mat(gray.size(), cv.CV_8UC1);
+
+						//only detect blue pixel 
+						for (x = 0; x < gray.cols; x++) {
+							for (y = 0; y < gray.rows; y++) {
+								blue = gray.ucharAt(y, x * gray.channels() + 1);
+								green = gray.ucharAt(y, x * gray.channels() + 1);
+								red = gray.ucharAt(y, x * gray.channels() + 0) ;
+								let diffRG = Math.abs(blue - green);
+								let reddish = diffRG < 30 || diffRG / Math.min(blue, green) < 0.5; // BASE : 20
+								if (red > 100 && (red > 2 * blue) && (red > 2 * green) && reddish) {
+									threshold.ucharPtr(y, x)[0] = 255;
+									threshold.ucharPtr(y, x)[1] = 255;
+									threshold.ucharPtr(y, x)[2] = 255;
+								}
+								else {
+									threshold.ucharPtr(y, x)[0] = 0;
+									threshold.ucharPtr(y, x)[1] = 0;
+									threshold.ucharPtr(y, x)[2] = 0;								
+								}
+							}
+						}/*at this point, output is a white square.*/
+
+						//because of the downsample, convert the ratio
+						/*let size = gray.size();
+						let bounding_rect = cv.boundingRect(threshold); // Find the bounding rectangle for biggest contour
+						console.log(bounding_rect);
+						if(bounding_rect.width > 0 && bounding_rect.height > 0) {
+							let xRatio = video.width/size.width;
+							let yRatio = video.height/size.height;
+							let dsize = new cv.Size((bounding_rect.width + bounding_rect.x) * xRatio, (bounding_rect.height + bounding_rect.y) * yRatio);
+							cv.resize(threshold, threshold, dsize, 0, 0, cv.INTER_AREA)
+						}*/
+
+						//find contour of the square that is only blue pixel
+						cv.findContours(threshold, contours, hierarchy, cv.RETR_TREE, cv.CHAIN_APPROX_NONE);    
+						
+						let largest_contour_index = -1;
+						let largest_area = 0;
+						let polys_tmp = new cv.MatVector();
+						let polys_final = new cv.MatVector();
+						let bounding_rect = 0; 
+
+						//find the largest square
+						for (let i = 0; i < contours.size(); ++i) {
+							let tmp = new cv.Mat();
+							let cnt = contours.get(i);	
+						
+							//find rectangle -- to be implemented
+							cv.approxPolyDP(cnt, tmp, 0.04 * cv.arcLength(cnt, true), true);
+							let area = cv.contourArea(tmp);
+							console.log('json ' + tmp);
+
+							if (area > largest_area && tmp.rows == 4){
+								largest_area = area;
+								largest_contour_index = i;//store the index of largest contour
+								bounding_rect = cv.boundingRect(tmp);
+								polys_tmp.push_back(tmp);//store Mat()
+								tmp.delete();cnt.delete();
+							}
+						}  
+
+						
+						console.log(polys_tmp.get(0));
+						/*
+						let disMin = 99999;
+						let indexUpLeft = -1;
+						for (let i = 0; i< 4; ++i) {
+							if(cv.norm(polys_tmp.get(i)) < disMin) {
+								disMin = cv.norm(polys_tmp.get(i))
+								indexUpLeft = i;
+							}
+						}
+
+						for (let i = indexUpLeft; i < indexUpLeft + 4; ++i) {
+							if (i < 4) {
+								polys_final.push_back(polys_tmp.get(i));
+							}
+							else {
+								polys_final.push_back(polys_tmp.get(i - 4));
+							}
+						}*/
+
+
+						if(largest_contour_index >= 0) {
+							polys = polys_final;
+							for (let i = 0; i < polys.size(); ++i) {
+								let t = polys.get(i);
+								cv.drawContours(dst, polys, i, [255, 0, 0, 255], 1, cv.LINE_8, new cv.Mat(), 1);
+							}
+
+							let size = gray.size();
+							let xRatio = video.width / size.width;
+							let yRatio = video.height / size.height;
+							let cnt = polys.get(largest_contour_index);
+							let point1 = new cv.Point(bounding_rect.x * xRatio, bounding_rect.y * yRatio);
+							let point2 = new cv.Point((bounding_rect.x + bounding_rect.width) * xRatio, (bounding_rect.y + bounding_rect.height) * yRatio);
+							cv.rectangle(dst, point1, point2, [255, 0, 0, 255], cv.FILLED)
+						}
+						
+						cv.imshow('canvasOutput', dst);
+						threshold.delete();polys_tmp.delete();
+						setTimeout(processVideo, 5);
+					}
+					
+					// schedule the first one.
+					setTimeout(processVideo, 0);
+				</script>
+				<script type="text/javascript">
+
+					//console.log(navigator.userAgent);
+
+					//alert('passed url ' + window.location.href);
+					// let vueComp = new Vue({
+					// //this targets the div id app
+					// el: '#app',
+					// data: {
+					// 	name: '' //this stores data values for ‘name’
+					// }
+					// })
+					var _LoadingHtml = '<div id="loadingDiv" style="display: none; ">' + 
+						'<div id="over">' +
+							'</div><div id=""><img style="position: fixed;top: 40%; left: 50%;margin-left:-25px;margin-top:-25px; width:50px;height:50px" src="./gear.gif" /></div></div>';
+					document.write(_LoadingHtml);
+					
+					function completeLoading() {  
+						document.getElementById("loadingDiv").style.display="none";
+					}
+					function showLoading()
+					{
+						document.getElementById("loadingDiv").style.display="block";
+					}
+
+					let utils = new Utils('errorMessage');
+
+					utils.loadCode('codeSnippet', 'codeEditor');
+
+					let streaming = false;
+					let videoInput = document.getElementById('videoInput');
+
+					let startAndStop = document.getElementById('startAndStop');
+					let canvasOutput = document.getElementById('canvasOutput');
+
+					let canvasContext = canvasOutput.getContext('2d');
+
+					let square = document.getElementById('square');
+
+					startAndStop.addEventListener('click', () => {
+						if(!streaming) {
+							utils.clearError();
+							utils.startCamera('qvga', onVideoStarted, 'videoInput');
+						} else {
+							utils.stopCamera();
+							onVideoStopped();
+						}
+					});
+
+					function onVideoStarted() {
+						streaming = true;
+						startAndStop.innerText = 'Stop';
+						videoInput.width = videoInput.videoWidth;
+						videoInput.height = videoInput.videoHeight;
+						utils.executeCode('codeEditor');
+
+						square.style.display="block";
+					}
+
+					function onVideoStopped() {
+						streaming = false;
+						canvasContext.clearRect(0, 0, canvasOutput.width, canvasOutput.height);
+						startAndStop.innerText = 'Start';						
+					}
+
+					showLoading();
+					utils.loadOpenCv(() => {
+						/*
+						let faceCascadeFile = 'Hand.Cascade.1.xml';
+						utils.createFileFromUrl(faceCascadeFile, faceCascadeFile, () => {
+							startAndStop.removeAttribute('disabled');
+						});*/
+						startAndStop.removeAttribute('disabled');
+					});
+				</script>
+	</body>
+
+</html>
