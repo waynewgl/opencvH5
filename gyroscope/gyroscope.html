@@ -36,6 +36,7 @@
         <li><a href="../gyroscope/gyroscope.html">Gyroscope</a></li>
     </ul>
     
+    <button id="request" title="Tap Here">Tap Here to enable orientation tracking</button>
 <h2>Device motion test</h2>
 <div id="msg"></div>
 
@@ -46,6 +47,26 @@
 
 
 <script>
+
+function requestT () {
+      if (typeof(DeviceMotionEvent) !== 'undefined' && typeof(DeviceMotionEvent.requestPermission) === 'function') {
+          
+          DeviceMotionEvent.requestPermission()
+          .then(response => {
+	alert('Orientation tracking '+ response);
+          
+            if (response == 'granted') {
+                function Orientation(selector){}
+            }
+          })
+      .catch(console.error)
+      }else {
+          alert('DeviceMotionEvent is not defined');
+      }
+
+  }
+  document.getElementById('request').onclick = requestT;
+
 
       if (typeof(DeviceMotionEvent) !== 'undefined' && typeof(DeviceMotionEvent.requestPermission) === 'function') {
           
