@@ -94,7 +94,11 @@ function Utils(errorOutputId) { // eslint-disable-line no-unused-vars
 
         const constraints = {
             'qvga': {width: {exact: 640}, height: {exact: 480}},
-            'vga': {width: {exact: 640}, height: {exact: 480}}};
+            'vga': {width: {exact: 640}, height: {exact: 480}},
+             advanced: [
+                { focusMode: 'manual', focusDistance: 100.33 }
+             ]
+        }
         let video = document.getElementById(videoId);
 
         if (!video) {
