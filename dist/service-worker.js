@@ -1,4 +1,4 @@
-importScripts("/precache-manifest.d1fc7479cbabf331d9b8d0035227f61c.js", "https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
+importScripts("/lenscopy/precache-manifest.dd4b758078f82abfef7537f68be9a256.js", "https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 if (workbox) {
 // 缓存web的css资源
