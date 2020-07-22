@@ -4,7 +4,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "../dist/data/haarcascade_frontalface_default.xml"
   },
   {
-    "revision": "c0c905a8633bc5df74de5e06e4f16244",
+    "revision": "f563dc1995645954ef43507ffaa31646",
     "url": "../dist/index.html"
   },
   {
@@ -40,19 +40,19 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "../dist/robots.txt"
   },
   {
-    "revision": "032dec6554d204caf476",
-    "url": "../dist/static/css/app.0b1fccbd.css"
+    "revision": "ddcc99d98605abea53c3",
+    "url": "../dist/static/css/app.c5d9c865.css"
   },
   {
     "revision": "084308e21f5a68b4fb63",
     "url": "../dist/static/js/about.347e7793.js"
   },
   {
-    "revision": "032dec6554d204caf476",
-    "url": "../dist/static/js/app.98741526.js"
+    "revision": "ddcc99d98605abea53c3",
+    "url": "../dist/static/js/app.e0cf5227.js"
   },
   {
-    "revision": "9412fcf3f7eec4a24de1",
-    "url": "../dist/static/js/chunk-vendors.371d9c04.js"
+    "revision": "66923665ff4e7b977332",
+    "url": "../dist/static/js/chunk-vendors.e4f36c65.js"
   }
 ]);
