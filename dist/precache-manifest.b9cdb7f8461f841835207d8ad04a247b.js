@@ -32,7 +32,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "libs/templateMatch.wasm"
   },
   {
-    "revision": "69c181bf93ab6e8430641e22017d8c1e",
+    "revision": "c1879101f5822acfa2e7af01c7aa30d3",
     "url": "manifest.json"
   },
   {
