@@ -4,7 +4,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "../dist/data/haarcascade_frontalface_default.xml"
   },
   {
-    "revision": "b699a841462130ce9c8c232629587de8",
+    "revision": "f4ee99f497e54d74cc3096b5b330835e",
     "url": "../dist/index.html"
   },
   {
@@ -40,16 +40,16 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "../dist/robots.txt"
   },
   {
-    "revision": "a281a89c9b15b4abe7d0",
-    "url": "../dist/static/css/app.c5d9c865.css"
+    "revision": "054b63c103eff022c087",
+    "url": "../dist/static/css/app.4fdd1544.css"
   },
   {
-    "revision": "59b18fa7bfaac4e7b967",
-    "url": "../dist/static/js/about.d95233a6.js"
+    "revision": "30921d0376489508b8f7",
+    "url": "../dist/static/js/about.7cded9ac.js"
   },
   {
-    "revision": "a281a89c9b15b4abe7d0",
-    "url": "../dist/static/js/app.967ac823.js"
+    "revision": "054b63c103eff022c087",
+    "url": "../dist/static/js/app.8f302732.js"
   },
   {
     "revision": "66923665ff4e7b977332",
