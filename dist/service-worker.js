@@ -1,4 +1,4 @@
-importScripts("precache-manifest.e887d5823b44f53e6c6fca576dbf5d39.js", "https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
+importScripts("precache-manifest.1b09b2a7c40f06d10e59d75da570807e.js", "https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 if (workbox) {
 // 缓存web的css资源
