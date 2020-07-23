@@ -1,14 +1,14 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "8b3a118b1ac0bc7318cd4947d5ef9696",
-    "url": "./static/manifest.json"
+    "url": "./manifest.json"
   },
   {
     "revision": "a03f92a797e309e76e6a034ab9e02616",
     "url": "data/haarcascade_frontalface_default.xml"
   },
   {
-    "revision": "da7244d78f6e687abf49d94062b808b7",
+    "revision": "fc7f144e4d21378fb01b887d2de3ba76",
     "url": "index.html"
   },
   {
