@@ -1,10 +1,14 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
+    "revision": "8b3a118b1ac0bc7318cd4947d5ef9696",
+    "url": "./static/manifest.json"
+  },
+  {
     "revision": "a03f92a797e309e76e6a034ab9e02616",
     "url": "data/haarcascade_frontalface_default.xml"
   },
   {
-    "revision": "d3f6df7d75109ff816eca30006ab8092",
+    "revision": "da7244d78f6e687abf49d94062b808b7",
     "url": "index.html"
   },
   {
@@ -30,10 +34,6 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "2123beab7abba1ac9c5b7b5ad32bfb2f",
     "url": "libs/templateMatch.wasm"
-  },
-  {
-    "revision": "c1879101f5822acfa2e7af01c7aa30d3",
-    "url": "manifest.json"
   },
   {
     "revision": "b6216d61c03e6ce0c9aea6ca7808f7ca",
